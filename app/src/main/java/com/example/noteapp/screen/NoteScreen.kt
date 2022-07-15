@@ -16,9 +16,14 @@ import androidx.compose.ui.unit.dp
 import com.example.noteapp.R
 import com.example.noteapp.components.NoteButton
 import com.example.noteapp.components.NoteInputText
+import com.example.noteapp.model.Note
 
 @Composable
-fun NoteScreen(){
+fun NoteScreen(
+    notes: List<Note>,
+    onAddNote: (Note) -> Unit,
+    onRemoveNote: (Note) -> Unit
+){
     var title by remember{
         mutableStateOf("")
     }
@@ -59,7 +64,14 @@ fun NoteScreen(){
                     if(it.all { char -> char.isLetter() || char.isWhitespace() }) description = it
                 })
 
-            NoteButton(text = "SAVE", onClick = { /*TODO*/ })
+            NoteButton(text = "SAVE", onClick = {
+                if(title.isNotEmpty() && description.isNotEmpty()){
+                    // listeye ekle
+                    title = ""
+                    description = ""
+
+                }
+            })
         }
 
     }
@@ -68,6 +80,6 @@ fun NoteScreen(){
 @Preview(showBackground = true)
 @Composable
 fun NotesScreenPreview(){
-    NoteScreen()
+    NoteScreen(notes = emptyList(), onAddNote = {}, onRemoveNote = {})
 }
 
