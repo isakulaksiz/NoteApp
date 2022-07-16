@@ -22,7 +22,9 @@ import com.example.noteapp.data.NotesDataSource
 import com.example.noteapp.model.Note
 import com.example.noteapp.screen.NoteViewModel
 import com.example.noteapp.ui.theme.NoteAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
