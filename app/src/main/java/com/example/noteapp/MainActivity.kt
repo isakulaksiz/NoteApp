@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -16,8 +17,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.noteapp.data.NotesDataSource
 import com.example.noteapp.model.Note
+import com.example.noteapp.screen.NoteViewModel
 import com.example.noteapp.ui.theme.NoteAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -31,15 +34,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val notes = remember{
-                        mutableStateListOf<Note>()
-                    }
-                    NoteScreen(notes = notes,
-                        onAddNote = {
-                                      notes.add(it)
-                    }, onRemoveNote = {
-                                notes.remove(it)
-                    })
+                    val noteViewModel: NoteViewModel by viewModels()
+                    NotesApp(noteViewModel)
                 }
             }
         }
@@ -49,6 +45,20 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String) {
     Text(text = "Hello $name!")
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun NotesApp(noteViewModel: NoteViewModel = viewModel()){
+
+    val notesList = noteViewModel.getAllNotes()
+
+    NoteScreen(notes = notesList,
+        onAddNote = {
+            noteViewModel.addNote(it)
+        }, onRemoveNote = {
+            noteViewModel.removeNote(it)
+        })
 }
 
 @Preview(showBackground = true)
