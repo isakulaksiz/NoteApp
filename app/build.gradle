@@ -51,7 +51,6 @@ android {
 }
 
 dependencies {
-    var room_version = "2.4.2"
     //Hilt-Dagger
     implementation("com.google.dagger:hilt-android:2.38.1")
     kapt("com.google.dagger:hilt-android-compiler:2.38.1")
