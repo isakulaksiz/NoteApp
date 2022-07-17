@@ -11,10 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -31,12 +28,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             NoteAppTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val noteViewModel: NoteViewModel by viewModels()
+                    val noteViewModel  = viewModel<NoteViewModel>()
                     NotesApp(noteViewModel)
                 }
             }
@@ -51,9 +47,9 @@ fun Greeting(name: String) {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NotesApp(noteViewModel: NoteViewModel = viewModel()){
+fun NotesApp(noteViewModel: NoteViewModel){
 
-    val notesList = noteViewModel.getAllNotes()
+    val notesList = noteViewModel.noteList.collectAsState().value
 
     NoteScreen(notes = notesList,
         onAddNote = {
